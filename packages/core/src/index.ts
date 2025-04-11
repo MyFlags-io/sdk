@@ -1,2 +1,2 @@
-export * from './client';
-export * from './types'; 
+export { MyFlagsSDK } from "./client";
+export { MyFlagsConfig, Flag } from "./types";

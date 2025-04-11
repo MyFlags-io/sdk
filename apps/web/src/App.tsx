@@ -1,70 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { ApiProvider, useApi } from "@myflags/react";
-
-interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-function TodoList() {
-  const api = useApi();
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const data = await api.get<Todo[]>("/todos");
-        setTodos(data);
-      } catch (err) {
-        setError("Failed to fetch todos");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTodos();
-  }, [api]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Todos</h2>
-      <ul className="space-y-2">
-        {todos.map((todo) => (
-          <li key={todo.id} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              readOnly
-              className="h-4 w-4"
-            />
-            <span>{todo.title}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+import React from "react";
+import { MyFlagsProvider } from "@myflags/react";
+import { Flags } from "./Flags";
+import Flag from "./Flag";
 
 function App() {
   return (
-    <ApiProvider
+    <MyFlagsProvider
       config={{
-        apiKey: "your-api-key",
-        baseUrl: "https://jsonplaceholder.typicode.com",
+        apiKey: "a50feb61-3e7a-453d-95c2-d47ee8e52bf2",
+        environment: "development",
+        projectId: "baigiel-dev",
       }}
     >
       <div className="min-h-screen bg-gray-100 p-8">
         <div className="mx-auto max-w-2xl">
-          <TodoList />
+          <h1>Flags example:</h1>
         </div>
       </div>
-    </ApiProvider>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <Flags />
+        <Flag name="test" />
+      </div>
+    </MyFlagsProvider>
   );
 }
 

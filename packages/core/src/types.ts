@@ -1,11 +1,9 @@
-export interface ApiConfig {
+export type Environment = "production" | "development" | "testing";
+
+export interface MyFlagsConfig {
   apiKey: string;
-  baseUrl?: string;
+  environment?: Environment;
+  projectId?: string;
 }
 
-export interface ApiClient {
-  get<T>(path: string): Promise<T>;
-  post<T>(path: string, data: unknown): Promise<T>;
-  put<T>(path: string, data: unknown): Promise<T>;
-  delete<T>(path: string): Promise<T>;
-} 
+export type Flag = Record<string, boolean>;

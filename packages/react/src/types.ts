@@ -1,0 +1,1 @@
+export { type Flag, type MyFlagsConfig } from "@myflags/core";
