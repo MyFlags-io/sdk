@@ -1,16 +1,14 @@
 import tseslint from 'typescript-eslint';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
 export default [
   {
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
+        project: './tsconfig.json',
         ecmaVersion: 2020,
         sourceType: 'module',
         ecmaFeatures: {
@@ -22,7 +20,6 @@ export default [
       '@typescript-eslint': tseslint.plugin,
       'react': reactPlugin,
       'react-hooks': reactHooksPlugin,
-      'react-refresh': reactRefreshPlugin,
     },
     settings: {
       react: {
@@ -37,7 +34,6 @@ export default [
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
     ignores: ['dist/**', 'node_modules/**'],
   }

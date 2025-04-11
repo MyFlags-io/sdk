@@ -1,7 +1,6 @@
-import React from "react";
 import { useFlag } from "@myflags/react";
 
-export default function Flag({ name }: { name: string }) {
+export default function Flag({ name }: { name: string }): JSX.Element {
   const flag = useFlag(name);
 
   console.log(name);

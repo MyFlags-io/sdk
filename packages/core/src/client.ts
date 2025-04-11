@@ -2,16 +2,12 @@ import axios, { AxiosInstance } from "axios";
 import axiosRetry from "axios-retry";
 
 import type { Flag, MyFlagsConfig } from "./types";
-
-// const API_URL = "https://myflags.io/api";
-const API_URL = "http://localhost:3000/api";
-
 export class MyFlagsSDK {
   private client: AxiosInstance;
 
   constructor(private readonly config: MyFlagsConfig) {
     this.client = axios.create({
-      baseURL: API_URL,
+      baseURL: "https://feature-flags-ebon.vercel.app/api",
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         "Content-Type": "application/json",
@@ -37,10 +33,8 @@ export class MyFlagsSDK {
       console.log("Fetching flags with config:", this.config);
 
       const response = await this.client.get<T>("/flags");
-      console.log("Flags fetched successfully:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error fetching flags:", error);
       return {} as T;
     }
   }
@@ -50,7 +44,6 @@ export class MyFlagsSDK {
       const response = await this.client.get<boolean>(`/flags/${key}`);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching flag ${key}:`, error);
       return false;
     }
   }

@@ -1,9 +1,8 @@
-import React from "react";
 import { MyFlagsProvider } from "@myflags/react";
-import { Flags } from "./Flags";
+import Flags from "./Flags";
 import Flag from "./Flag";
 
-function App() {
+function App(): JSX.Element {
   return (
     <MyFlagsProvider
       config={{
