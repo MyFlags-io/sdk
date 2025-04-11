@@ -17,6 +17,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@myflags/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@myflags/react':
         specifier: workspace:*
         version: link:../../packages/react

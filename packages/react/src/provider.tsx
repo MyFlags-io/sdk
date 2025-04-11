@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { Flag, MyFlagsConfig, MyFlagsSDK } from "@myflags/core";
+import { useSessionStorage } from "./hooks/useSessionStorage";
 
 interface MyFlagsProviderProps {
   config: MyFlagsConfig;
@@ -18,7 +19,7 @@ export function MyFlagsProvider({
   config,
   children,
 }: MyFlagsProviderProps): JSX.Element {
-  const [flags, setFlags] = useState<Flag>({});
+  const [flags, setFlags] = useSessionStorage<Flag>('flags', {});
   const [isMounted, setIsMounted] = useState(false);
   const [client] = useState<MyFlagsSDK>(new MyFlagsSDK(config));
   const refreshInterval = config.refreshInterval || 1000 * 60 * 10;
