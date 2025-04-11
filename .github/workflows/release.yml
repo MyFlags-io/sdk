@@ -6,7 +6,6 @@ on:
       - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
-
 permissions: write-all
 
 jobs:
@@ -14,29 +13,32 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 10.6.2
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm version-packages
-          publish: pnpm release
+          publish: pnpm run release
+          commit: "chore: version packages"
+          title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
