@@ -17,15 +17,15 @@ pnpm add @myflags/react @myflags/core
 ### Provider Setup
 
 ```tsx
-import { MyFlagsProvider } from '@myflags/react';
+import { MyFlagsProvider } from "@myflags/react";
 
 function App() {
   return (
     <MyFlagsProvider
       config={{
-        apiKey: 'your-api-key',
-        projectId: 'your-project-id',
-        environment: 'production',
+        apiKey: "your-api-key",
+        projectId: "your-project-id",
+        environment: "production",
         refreshInterval: 600000, // optional, defaults to 10 minutes
       }}
     >
@@ -38,14 +38,14 @@ function App() {
 ### Using Hooks
 
 ```tsx
-import useFlag from '@myflags/react';
+import useFlag from "@myflags/react";
 
 function MyComponent() {
   // Check if a feature is enabled
-  const isEnabled = useFlag('feature-name');
+  const isEnabled = useFlag("feature_key");
 
   // With default value
-  const isEnabledWithDefault = useFlag('feature-name', false);
+  const isEnabledWithDefault = useFlag("feature_key", false);
 
   if (isEnabled) {
     return <div>New feature is enabled!</div>;
@@ -58,21 +58,17 @@ function MyComponent() {
 ### Using Components
 
 ```tsx
-import { FeatureFlag, FeatureValue } from '@myflags/react';
+import { FeatureFlag, FeatureValue } from "@myflags/react";
 
 function MyComponent() {
   return (
     <div>
-      <FeatureFlag name="feature-name">
-        {(enabled) => (
-          enabled ? <NewFeature /> : <OldFeature />
-        )}
+      <FeatureFlag name="feature_key">
+        {(enabled) => (enabled ? <NewFeature /> : <OldFeature />)}
       </FeatureFlag>
 
-      <FeatureValue name="theme-color" defaultValue="blue">
-        {(color) => (
-          <div style={{ color }}>Themed content</div>
-        )}
+      <FeatureValue name="theme_color" defaultValue="blue">
+        {(color) => <div style={{ color }}>Themed content</div>}
       </FeatureValue>
     </div>
   );
@@ -94,6 +90,7 @@ The provider component that makes feature flags available to all child component
 ```
 
 Props:
+
 - `config`: Configuration object for the MyFlags SDK
   - `apiKey`: string (required) - Your MyFlags API key
   - `projectId`: string (optional) - Your project ID
@@ -113,16 +110,19 @@ const isEnabled = useFlag(name: string, defaultValue: boolean = false): boolean;
 ## Best Practices
 
 1. **Provider Placement**
+
    - Place the `MyFlagsProvider` as high as possible in your component tree
    - Ensure the provider is mounted before any feature flag checks
    - Consider using environment variables for configuration
 
 2. **Performance Optimization**
+
    - Use the `useFlag` hook for boolean flags
    - Memoize components that use feature flags with `React.memo`
    - Consider the refresh interval based on your needs
 
 3. **Error Handling**
+
    - The SDK handles errors gracefully by returning default values
    - Provide fallback UI for when flags are unavailable
    - Monitor API responses for potential issues
@@ -135,16 +135,16 @@ const isEnabled = useFlag(name: string, defaultValue: boolean = false): boolean;
 ## Example
 
 ```tsx
-import { MyFlagsProvider } from '@myflags/react';
-import useFlag from '@myflags/react';
+import { MyFlagsProvider } from "@myflags/react";
+import useFlag from "@myflags/react";
 
 function App() {
   return (
     <MyFlagsProvider
       config={{
-        apiKey: 'your-api-key',
-        projectId: 'your-project-id',
-        environment: 'production',
+        apiKey: "your-api-key",
+        projectId: "your-project-id",
+        environment: "production",
       }}
     >
       <Header />
@@ -155,16 +155,10 @@ function App() {
 }
 
 function MainContent() {
-  const isNewDashboardEnabled = useFlag('new-dashboard');
-  
+  const isNewDashboardEnabled = useFlag("new-dashboard");
+
   return (
-    <main>
-      {isNewDashboardEnabled ? (
-        <NewDashboard />
-      ) : (
-        <OldDashboard />
-      )}
-    </main>
+    <main>{isNewDashboardEnabled ? <NewDashboard /> : <OldDashboard />}</main>
   );
 }
 ```
@@ -175,4 +169,4 @@ See the [Contributing Guide](../../CONTRIBUTING.md) for details on how to contri
 
 ## License
 
-This package is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details. 
+This package is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.
