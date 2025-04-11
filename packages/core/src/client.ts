@@ -28,6 +28,15 @@ export class MyFlagsSDK {
     });
   }
 
+  async subscribe(callback: (flags: Flag) => void): Promise<() => void> {
+    const interval = setInterval(async () => {
+      const flags = await this.getFlags<Flag>();
+      callback(flags);
+    }, this.config.refreshInterval);
+
+    return () => clearInterval(interval);
+  }
+
   async getFlags<T extends Flag>(): Promise<T> {
     try {
       const response = await this.client.get<T>("/flags");

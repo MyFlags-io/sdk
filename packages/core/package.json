@@ -1,6 +1,6 @@
 {
   "name": "@myflags/core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Core SDK for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",
@@ -27,7 +27,9 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src/**/*.ts",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "publishConfig": {
     "access": "public"
@@ -43,7 +45,10 @@
     "eslint": "^9.24.0",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^8.29.1"
+    "typescript-eslint": "^8.29.1",
+    "vitest": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2",
+    "jsdom": "^24.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

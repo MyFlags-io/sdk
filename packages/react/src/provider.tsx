@@ -6,18 +6,20 @@ import React, {
   useState,
 } from "react";
 import { Flag, MyFlagsConfig, MyFlagsSDK } from "@myflags/core";
+import { useSessionStorage } from "./hooks/useSessionStorage";
+
 interface MyFlagsProviderProps {
   config: MyFlagsConfig;
   children: React.ReactNode;
 }
 
-export const MyFlagsContext = createContext<Flag>({});
+export const MyFlagsContext = createContext<Flag | null>(null);
 
 export function MyFlagsProvider({
   config,
   children,
 }: MyFlagsProviderProps): JSX.Element {
-  const [flags, setFlags] = useState<Flag>({});
+  const [flags, setFlags] = useSessionStorage<Flag>('flags', {});
   const [isMounted, setIsMounted] = useState(false);
   const [client] = useState<MyFlagsSDK>(new MyFlagsSDK(config));
   const refreshInterval = config.refreshInterval || 1000 * 60 * 10;
@@ -37,10 +39,8 @@ export function MyFlagsProvider({
   }, [client, isMounted, fetchFlags]);
 
   useEffect(() => {
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchFlags, refreshInterval);
-      return () => clearInterval(interval);
-    }
+    const interval = setInterval(fetchFlags, refreshInterval);
+    return () => clearInterval(interval);
   }, [refreshInterval, fetchFlags]);
 
   return (

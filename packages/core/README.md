@@ -1,5 +1,9 @@
 # @myflags/core
 
+[![Website](https://img.shields.io/badge/website-myflags.io-blue)](https://myflags.io)
+
+> **MyFlags** - The modern way to manage feature flags in your applications. Ship features faster, control releases with confidence, and deliver better user experiences.
+
 The core package of MyFlags SDK, providing the fundamental functionality for feature flag management.
 
 ## Installation
@@ -68,6 +72,27 @@ The main class for interacting with the MyFlags service.
 
 - `getFlags<T extends Flag>(): Promise<T>` - Get all feature flags
 - `getFlag(key: string): Promise<boolean>` - Check if a specific feature is enabled
+- `subscribe(callback: (flags: Flag) => void): Promise<() => void>` - Subscribe to flag updates. The callback will be called immediately and then at the specified refresh interval. Returns an unsubscribe function to clean up the subscription.
+
+### Real-time Updates
+
+You can subscribe to flag updates to get real-time notifications when flags change:
+
+```typescript
+const sdk = new MyFlagsSDK({
+  apiKey: "your-api-key",
+  projectId: "your-project-id",
+  refreshInterval: 5000, // Check for updates every 5 seconds
+});
+
+// Subscribe to flag updates
+const unsubscribe = await sdk.subscribe((flags) => {
+  console.log("Flags updated:", flags);
+});
+
+// Later, when you want to stop receiving updates
+unsubscribe();
+```
 
 ## Best Practices
 
