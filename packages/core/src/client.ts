@@ -30,8 +30,6 @@ export class MyFlagsSDK {
 
   async getFlags<T extends Flag>(): Promise<T> {
     try {
-      console.log("Fetching flags with config:", this.config);
-
       const response = await this.client.get<T>("/flags");
       return response.data;
     } catch {
