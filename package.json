@@ -1,0 +1,22 @@
+{
+  "name": "api-sdk-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r lint",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3",
+    "tsup": "^8.0.2",
+    "prettier": "^3.2.5",
+    "eslint": "^8.57.0"
+  }
+}
