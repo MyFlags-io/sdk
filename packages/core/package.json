@@ -1,6 +1,21 @@
 {
   "name": "@myflags/core",
   "version": "0.0.1",
+  "description": "Core SDK for MyFlags feature flag management",
+  "author": "MyFlags Team",
+  "license": "MIT",
+  "homepage": "https://github.com/myflags/sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myflags/sdk.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "feature-flags",
+    "feature-toggles",
+    "flags",
+    "sdk"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,6 +29,10 @@
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  
   "dependencies": {
     "axios": "^1.6.7",
     "axios-retry": "^4.0.0"
@@ -25,5 +44,8 @@
     "tsup": "^8.0.2",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.29.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
