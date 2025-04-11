@@ -1,5 +1,9 @@
 # @myflags/react
 
+[![Website](https://img.shields.io/badge/website-myflags.io-blue)](https://myflags.io)
+
+> **MyFlags** - The modern way to manage feature flags in your applications. Ship features faster, control releases with confidence, and deliver better user experiences.
+
 React bindings for MyFlags SDK, providing hooks and components for easy feature flag management in React applications.
 
 ## Installation

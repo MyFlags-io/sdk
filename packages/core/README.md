@@ -1,5 +1,9 @@
 # @myflags/core
 
+[![Website](https://img.shields.io/badge/website-myflags.io-blue)](https://myflags.io)
+
+> **MyFlags** - The modern way to manage feature flags in your applications. Ship features faster, control releases with confidence, and deliver better user experiences.
+
 The core package of MyFlags SDK, providing the fundamental functionality for feature flag management.
 
 ## Installation
