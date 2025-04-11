@@ -8,4 +8,4 @@ export interface ApiClient {
   post<T>(path: string, data: unknown): Promise<T>;
   put<T>(path: string, data: unknown): Promise<T>;
   delete<T>(path: string): Promise<T>;
-}
+} 

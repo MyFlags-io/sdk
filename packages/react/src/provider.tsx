@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
-import type { ApiConfig, ApiClient } from "../../core/dist";
-import { ApiClientImpl } from "../../core/dist";
+import { ApiConfig, ApiClient, ApiClientImpl } from "@myflags/core";
 
 interface ApiContext {
   config: ApiConfig;

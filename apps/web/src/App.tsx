@@ -1,5 +1,5 @@
-import { ApiProvider, useApi } from '@myflags/react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { ApiProvider, useApi } from "@myflags/react";
 
 interface Todo {
   id: number;
@@ -16,10 +16,10 @@ function TodoList() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const data = await api.get<Todo[]>('/todos');
+        const data = await api.get<Todo[]>("/todos");
         setTodos(data);
       } catch (err) {
-        setError('Failed to fetch todos');
+        setError("Failed to fetch todos");
       } finally {
         setLoading(false);
       }
@@ -55,8 +55,8 @@ function App() {
   return (
     <ApiProvider
       config={{
-        apiKey: 'your-api-key',
-        baseUrl: 'https://jsonplaceholder.typicode.com',
+        apiKey: "your-api-key",
+        baseUrl: "https://jsonplaceholder.typicode.com",
       }}
     >
       <div className="min-h-screen bg-gray-100 p-8">

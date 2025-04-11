@@ -44,4 +44,4 @@ export class ApiClientImpl implements ApiClient {
     const response = await this.client.delete<T>(path);
     return response.data;
   }
-}
+} 
