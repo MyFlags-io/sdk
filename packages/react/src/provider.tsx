@@ -39,10 +39,8 @@ export function MyFlagsProvider({
   }, [client, isMounted, fetchFlags]);
 
   useEffect(() => {
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchFlags, refreshInterval);
-      return () => clearInterval(interval);
-    }
+    const interval = setInterval(fetchFlags, refreshInterval);
+    return () => clearInterval(interval);
   }, [refreshInterval, fetchFlags]);
 
   return (
