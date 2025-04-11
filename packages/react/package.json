@@ -1,6 +1,6 @@
 {
   "name": "@myflags/react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "React SDK for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",
@@ -32,7 +32,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "react": "^18.0.0"
+    "react": ">=18.0.0"
   },
   "dependencies": {
     "@myflags/core": "workspace:*"
