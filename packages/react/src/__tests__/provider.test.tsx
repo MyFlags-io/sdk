@@ -17,6 +17,7 @@ describe('MyFlagsProvider', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(MyFlagsSDK).mockImplementation(function(this: any) {
       this.getFlags = vi.fn().mockResolvedValue(mockFlags);
       this.getFlag = vi.fn();
@@ -45,6 +46,7 @@ describe('MyFlagsProvider', () => {
 
   it('should refresh flags at specified interval', async () => {
     const mockGetFlags = vi.fn().mockResolvedValue(mockFlags);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(MyFlagsSDK).mockImplementation(function(this: any) {
       this.getFlags = mockGetFlags;
       this.getFlag = vi.fn();

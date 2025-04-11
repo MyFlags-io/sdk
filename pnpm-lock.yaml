@@ -115,6 +115,9 @@ importers:
       '@myflags/core':
         specifier: workspace:*
         version: link:../core
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.24.0(jiti@1.21.7))
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.2
@@ -146,6 +149,9 @@ importers:
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@1.21.7)
+      eslint-plugin-react:
+        specifier: ^7.33.2
+        version: 7.37.5(eslint@9.24.0(jiti@1.21.7))
       jsdom:
         specifier: ^24.0.0
         version: 24.1.3
