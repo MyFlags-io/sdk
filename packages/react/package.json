@@ -1,7 +1,7 @@
 {
   "name": "@myflags/react",
-  "version": "0.2.2",
-  "description": "React SDK for MyFlags feature flag management",
+  "version": "0.2.3",
+  "description": "React bindings for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",
   "homepage": "https://github.com/myflags/sdk#readme",
@@ -19,7 +19,6 @@
   ],
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "files": [
@@ -29,28 +28,38 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
-    "react": ">=18.0.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "dependencies": {
     "@myflags/core": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^18.2.61",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^9.24.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "react": "^18.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^8.29.1"
-  },
-  "publishConfig": {
-    "access": "public"
+    "typescript-eslint": "^8.29.1",
+    "vitest": "^1.2.2",
+    "@vitest/coverage-v8": "^1.2.2",
+    "jsdom": "^24.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

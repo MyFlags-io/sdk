@@ -6,12 +6,13 @@ import React, {
   useState,
 } from "react";
 import { Flag, MyFlagsConfig, MyFlagsSDK } from "@myflags/core";
+
 interface MyFlagsProviderProps {
   config: MyFlagsConfig;
   children: React.ReactNode;
 }
 
-export const MyFlagsContext = createContext<Flag>({});
+export const MyFlagsContext = createContext<Flag | null>(null);
 
 export function MyFlagsProvider({
   config,
