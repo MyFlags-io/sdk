@@ -1,6 +1,9 @@
 import { useMyFlagsContext } from "../provider";
 
-export default function useFlag(name: string, defaultValue: boolean = false) {
+export default function useFlag(
+  name: string,
+  defaultValue: boolean = false
+): boolean {
   const context = useMyFlagsContext();
   return context[name] || defaultValue;
 }

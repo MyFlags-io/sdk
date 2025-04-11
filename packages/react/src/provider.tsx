@@ -13,7 +13,10 @@ interface MyFlagsProviderProps {
 
 export const MyFlagsContext = createContext<Flag>({});
 
-export function MyFlagsProvider({ config, children }: MyFlagsProviderProps) {
+export function MyFlagsProvider({
+  config,
+  children,
+}: MyFlagsProviderProps): JSX.Element {
   const [flags, setFlags] = useState<Flag>({});
   const [isMounted, setIsMounted] = useState(false);
   const [client] = useState<MyFlagsSDK>(new MyFlagsSDK(config));
@@ -45,7 +48,7 @@ export function MyFlagsProvider({ config, children }: MyFlagsProviderProps) {
   );
 }
 
-export function useMyFlagsContext() {
+export function useMyFlagsContext(): Flag {
   const context = useContext(MyFlagsContext);
   if (!context) {
     throw new Error("useMyFlagsContext must be used within an MyFlagsProvider");
