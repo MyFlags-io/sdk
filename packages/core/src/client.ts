@@ -34,7 +34,7 @@ export class MyFlagsSDK {
 
       const response = await this.client.get<T>("/flags");
       return response.data;
-    } catch (error) {
+    } catch {
       return {} as T;
     }
   }
@@ -43,7 +43,7 @@ export class MyFlagsSDK {
     try {
       const response = await this.client.get<boolean>(`/flags/${key}`);
       return response.data;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
