@@ -6,9 +6,9 @@ function App(): JSX.Element {
   return (
     <MyFlagsProvider
       config={{
-        apiKey: "a50feb61-3e7a-453d-95c2-d47ee8e52bf2",
+        apiKey: "api-key",
         environment: "development",
-        projectId: "baigiel-dev",
+        projectId: "project-id",
       }}
     >
       <div className="min-h-screen bg-gray-100 p-8">

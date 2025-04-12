@@ -1,4 +1,4 @@
-import { useMyFlagsContext } from "../provider";
+import { useMyFlagsContext } from "../Provider";
 
 export default function useFlag(
   name: string,

@@ -2,6 +2,9 @@ import axios, { AxiosInstance } from "axios";
 import axiosRetry from "axios-retry";
 
 import type { Flag, MyFlagsConfig } from "./types";
+
+export const REFRESH_INTERVAL = 1000 * 60 * 10;
+
 export class MyFlagsSDK {
   private client: AxiosInstance;
 
@@ -28,7 +31,7 @@ export class MyFlagsSDK {
     });
   }
 
-  async subscribe(callback: (flags: Flag) => void): Promise<() => void> {
+  subscribe(callback: (flags: Flag) => void): () => void {
     const interval = setInterval(async () => {
       const flags = await this.getFlags<Flag>();
       callback(flags);
@@ -40,6 +43,7 @@ export class MyFlagsSDK {
   async getFlags<T extends Flag>(): Promise<T> {
     try {
       const response = await this.client.get<T>("/flags");
+      
       return response.data;
     } catch {
       return {} as T;

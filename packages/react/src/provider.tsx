@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Flag, MyFlagsConfig, MyFlagsSDK } from "@myflags/core";
+import { Flag, MyFlagsConfig, MyFlagsSDK, REFRESH_INTERVAL } from "@myflags/core";
 import { useSessionStorage } from "./hooks/useSessionStorage";
 
 interface MyFlagsProviderProps {
@@ -22,7 +22,7 @@ export function MyFlagsProvider({
   const [flags, setFlags] = useSessionStorage<Flag>('flags', {});
   const [isMounted, setIsMounted] = useState(false);
   const [client] = useState<MyFlagsSDK>(new MyFlagsSDK(config));
-  const refreshInterval = config.refreshInterval || 1000 * 60 * 10;
+  const refreshInterval = config.refreshInterval || REFRESH_INTERVAL;
 
   const fetchFlags = useCallback(async () => {
     const fetchedFlags = await client.getFlags();
