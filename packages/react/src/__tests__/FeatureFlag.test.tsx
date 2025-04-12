@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import { FeatureFlag } from "../components/FeatureFlag";
-import { MyFlagsProvider } from "../provider";
+import { MyFlagsProvider } from "../Provider";
 import { MyFlagsSDK } from "@myflags/core";
 
 describe("FeatureFlag", () => {

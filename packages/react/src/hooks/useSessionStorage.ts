@@ -7,7 +7,7 @@ export function useSessionStorage<T>(
   initialValue: T
 ): [T, (value: T) => void] {
   // Get the initial value from sessionStorage synchronously
-  const getStoredValue = (): T => {
+  const getStoredValue = useCallback(() => {
     if (typeof window === "undefined") {
       return initialValue;
     }
@@ -21,7 +21,7 @@ export function useSessionStorage<T>(
       console.error("Error reading from sessionStorage:", error);
       return initialValue;
     }
-  };
+  }, [key, initialValue]);
 
   // Initialize state with the value from sessionStorage
   const [storedValue, setStoredValue] = useState<T>(getStoredValue);
@@ -45,7 +45,7 @@ export function useSessionStorage<T>(
         console.error("Error writing to sessionStorage:", error);
       }
     },
-    [key]
+    [key, getStoredValue]
   );
 
   return [storedValue, setValue];

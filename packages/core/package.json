@@ -1,6 +1,6 @@
 {
   "name": "@myflags/core",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Core SDK for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",

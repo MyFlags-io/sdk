@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
-import { MyFlagsProvider, useMyFlagsContext } from "../provider";
+import { MyFlagsProvider, useMyFlagsContext } from "../Provider";
 import { MyFlagsSDK } from "@myflags/core";
 
 describe("MyFlagsProvider", () => {

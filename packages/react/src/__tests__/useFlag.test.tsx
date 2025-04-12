@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import useFlag from "../hooks/useFlag";
-import { MyFlagsProvider } from "../provider";
+import { MyFlagsProvider } from "../Provider";
 import { MyFlagsSDK } from "@myflags/core";
 
 describe("useFlag", () => {
@@ -22,7 +22,6 @@ describe("useFlag", () => {
       () =>
         ({
           getFlags: vi.fn().mockResolvedValue(mockFlags),
-          getFlag: vi.fn(),
           config: mockConfig,
           client: {
             get: vi.fn(),
