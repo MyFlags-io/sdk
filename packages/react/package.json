@@ -40,7 +40,8 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@myflags/core": "workspace:*"
+    "@myflags/core": "workspace:*",
+    "eslint-plugin-react-hooks": "^5.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",

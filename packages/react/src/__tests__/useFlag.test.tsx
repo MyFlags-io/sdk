@@ -37,7 +37,6 @@ describe("useFlag", () => {
 
     const { result } = renderHook(() => useFlag("feature1"), { wrapper });
 
-    // Wait for initial flags to load
     await act(async () => {
       await vi.runOnlyPendingTimersAsync();
     });
@@ -54,7 +53,6 @@ describe("useFlag", () => {
       wrapper,
     });
 
-    // Wait for initial flags to load
     await act(async () => {
       await vi.runOnlyPendingTimersAsync();
     });
@@ -69,7 +67,6 @@ describe("useFlag", () => {
 
     const { result } = renderHook(() => useFlag("nonexistent"), { wrapper });
 
-    // Wait for initial flags to load
     await act(async () => {
       await vi.runOnlyPendingTimersAsync();
     });

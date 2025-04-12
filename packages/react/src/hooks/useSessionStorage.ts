@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useCallback } from "react";
 
 const SESSION_STORAGE_PREFIX = "myflags_";
