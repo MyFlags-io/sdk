@@ -1,5 +1,5 @@
 import { Flag } from "@myflags/core";
-import { useMyFlagsContext } from "../ProviderTest";
+import { useMyFlagsContext } from "../Provider";
 
 export default function useFlags(): Flag {
   const context = useMyFlagsContext();
