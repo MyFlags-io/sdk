@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import useFlags from "../hooks/useFlags";
-import { MyFlagsProvider } from "../Provider";
+import { MyFlagsProvider } from "../ProviderTest";
 import { MyFlagsSDK } from "@myflags/core";
 
 describe("useFlags", () => {
