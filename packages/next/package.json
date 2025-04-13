@@ -1,14 +1,14 @@
 {
   "name": "@myflags/next",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "description": "Next.js bindings for MyFlags SDK",
   "author": "MyFlags Team",
   "license": "MIT",
-  "homepage": "https://github.com/myflags/sdk#readme",
+  "homepage": "https://github.com/myflags-io/sdk#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/myflags/sdk.git",
+    "url": "https://github.com/myflags-io/sdk.git",
     "directory": "packages/next"
   },
   "keywords": [
