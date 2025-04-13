@@ -168,9 +168,8 @@ pnpm test
 ## 🔗 Useful Links
 
 - [MyFlags Website](https://myflags.io)
-- [Documentation](https://docs.myflags.io)
-- [Dashboard](https://app.myflags.io)
-- [Blog](https://myflags.io/blog)
+- [Documentation](https://myflags.io/documentation)
+- [Dashboard](https://myflags.io/app/dashboard)
 - [Twitter](https://twitter.com/myflags)
 
 ## 📄 License
