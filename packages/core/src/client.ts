@@ -35,7 +35,7 @@ export class MyFlagsSDK {
     const interval = setInterval(async () => {
       const flags = await this.getFlags<Flag>();
       callback(flags);
-    }, this.config.refreshInterval);
+    }, this.config.refreshInterval || REFRESH_INTERVAL);
 
     return () => clearInterval(interval);
   }
@@ -43,7 +43,6 @@ export class MyFlagsSDK {
   async getFlags<T extends Flag>(): Promise<T> {
     try {
       const response = await this.client.get<T>("/flags");
-      
       return response.data;
     } catch {
       return {} as T;
