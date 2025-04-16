@@ -1,6 +1,6 @@
 {
   "name": "@myflags/next",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "type": "module",
   "description": "Next.js bindings for MyFlags SDK",
   "author": "MyFlags Team",
@@ -44,8 +44,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@myflags/core": "workspace:*",
-    "react": "^18.2.0"
+    "@myflags/core": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
