@@ -1,6 +1,6 @@
 {
   "name": "@myflags/react",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "React bindings for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",
@@ -40,8 +40,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@myflags/core": "workspace:*",
-    "eslint-plugin-react-hooks": "^5.2.0"
+    "@myflags/core": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
