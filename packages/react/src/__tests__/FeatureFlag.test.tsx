@@ -1,79 +1,172 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, act } from "@testing-library/react";
-import { FeatureFlag } from "../components/FeatureFlag";
-import { MyFlagsProvider } from "../Provider";
+import { useState } from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { MyFlagsSDK } from "@myflags/core";
+import { MyFlagsProvider } from "../Provider";
+import { FeatureFlag } from "../components/FeatureFlag";
+import * as IndexedDBHook from "../hooks/useIndexedDB";
 
-describe("FeatureFlag", () => {
+// Mock the MyFlagsSDK
+vi.mock("@myflags/core", () => {
+  const MockSDK = vi.fn().mockImplementation(() => ({
+    config: {
+      apiKey: "test-api-key",
+      projectId: "test-project",
+      environment: "development",
+    },
+    baseUrl: "https://myflags.io/api",
+    getFlags: vi.fn().mockResolvedValue({}),
+    getFlag: vi.fn().mockResolvedValue(false),
+    subscribe: vi.fn().mockImplementation((callback) => {
+      callback({
+        enabledFeature: true,
+        disabledFeature: false,
+      });
+      return () => {};
+    }),
+    fetch: vi.fn(),
+  }));
+  
+  return {
+    MyFlagsSDK: MockSDK,
+    // Re-export types
+    Flag: {},
+    MyFlagsConfig: {},
+  };
+});
+
+describe("FeatureFlag component", () => {
   const mockConfig = {
     apiKey: "test-api-key",
     projectId: "test-project",
     environment: "development" as const,
   };
 
-  const mockFlags = {
-    feature1: true,
-    feature2: false,
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(MyFlagsSDK).mockImplementation(
-      () =>
-        ({
-          getFlags: vi.fn().mockResolvedValue(mockFlags),
-          getFlag: vi.fn(),
-        } as unknown as MyFlagsSDK)
+    
+    // Mock the IndexedDB hook to avoid actual IndexedDB usage
+    vi.spyOn(IndexedDBHook, "useIndexedDB").mockImplementation(
+      (_, initialValue) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [state, setState] = useState(initialValue);
+        return [state, setState];
+      }
     );
   });
 
-  it("should render children when flag is enabled", async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should render children when flag is enabled", () => {
+    const expectedFlags = {
+      enabledFeature: true,
+      disabledFeature: false,
+    };
+
+    // Mock the subscription to return our expected flags
+    vi.mocked(MyFlagsSDK).mockImplementation(() => ({
+      config: mockConfig,
+      baseUrl: "https://myflags.io/api",
+      getFlags: vi.fn().mockResolvedValue(expectedFlags),
+      getFlag: vi.fn(),
+      subscribe: vi.fn().mockImplementation((callback) => {
+        callback(expectedFlags);
+        return () => {};
+      }),
+      fetch: vi.fn(),
+    } as unknown as MyFlagsSDK));
+
     render(
       <MyFlagsProvider config={mockConfig}>
-        <FeatureFlag name="feature1">
-          {(enabled) => enabled && <div data-testid="content">Enabled</div>}
+        <FeatureFlag name="enabledFeature">
+          {(enabled) => (
+            enabled ? <div data-testid="feature-content">Feature is enabled</div> : null
+          )}
         </FeatureFlag>
       </MyFlagsProvider>
     );
 
-    await act(async () => {
-      await vi.runOnlyPendingTimersAsync();
-    });
-
-    expect(screen.getByTestId("content")).toBeInTheDocument();
-    expect(screen.getByTestId("content")).toHaveTextContent("Enabled");
+    // The content should be visible since the flag is enabled
+    expect(screen.getByTestId("feature-content")).toBeInTheDocument();
+    expect(screen.getByTestId("feature-content")).toHaveTextContent("Feature is enabled");
   });
 
-  it("should not render children when flag is disabled", async () => {
+  it("should not render children when flag is disabled", () => {
+    const expectedFlags = {
+      enabledFeature: true,
+      disabledFeature: false,
+    };
+
+    // Mock the subscription to return our expected flags
+    vi.mocked(MyFlagsSDK).mockImplementation(() => ({
+      config: mockConfig,
+      baseUrl: "https://myflags.io/api",
+      getFlags: vi.fn().mockResolvedValue(expectedFlags),
+      getFlag: vi.fn(),
+      subscribe: vi.fn().mockImplementation((callback) => {
+        callback(expectedFlags);
+        return () => {};
+      }),
+      fetch: vi.fn(),
+    } as unknown as MyFlagsSDK));
+
     render(
       <MyFlagsProvider config={mockConfig}>
-        <FeatureFlag name="feature2">
-          {(enabled) => enabled && <div data-testid="content">Enabled</div>}
+        <FeatureFlag name="disabledFeature">
+          {(enabled) => (
+            enabled ? (
+              <div data-testid="feature-content">Feature is enabled</div>
+            ) : (
+              <div data-testid="disabled-content">Feature is disabled</div>
+            )
+          )}
         </FeatureFlag>
       </MyFlagsProvider>
     );
 
-    await act(async () => {
-      await vi.runOnlyPendingTimersAsync();
-    });
-
-    expect(screen.queryByTestId("content")).not.toBeInTheDocument();
+    // The disabled content should be visible since the flag is disabled
+    expect(screen.queryByTestId("feature-content")).not.toBeInTheDocument();
+    expect(screen.getByTestId("disabled-content")).toBeInTheDocument();
+    expect(screen.getByTestId("disabled-content")).toHaveTextContent("Feature is disabled");
   });
 
-  it("should use default value when flag does not exist", async () => {
+  it("should use defaultValue when flag doesn't exist", () => {
+    const expectedFlags = {
+      enabledFeature: true,
+      disabledFeature: false,
+    };
+
+    // Mock the subscription to return our expected flags
+    vi.mocked(MyFlagsSDK).mockImplementation(() => ({
+      config: mockConfig,
+      baseUrl: "https://myflags.io/api",
+      getFlags: vi.fn().mockResolvedValue(expectedFlags),
+      getFlag: vi.fn(),
+      subscribe: vi.fn().mockImplementation((callback) => {
+        callback(expectedFlags);
+        return () => {};
+      }),
+      fetch: vi.fn(),
+    } as unknown as MyFlagsSDK));
+
     render(
       <MyFlagsProvider config={mockConfig}>
-        <FeatureFlag name="nonexistent" defaultValue={true}>
-          {(enabled) => enabled && <div data-testid="content">Enabled</div>}
+        <FeatureFlag name="nonExistentFeature" defaultValue={true}>
+          {(enabled) => (
+            enabled ? (
+              <div data-testid="feature-content">Feature is enabled by default</div>
+            ) : (
+              <div data-testid="disabled-content">Feature is disabled by default</div>
+            )
+          )}
         </FeatureFlag>
       </MyFlagsProvider>
     );
 
-    await act(async () => {
-      await vi.runOnlyPendingTimersAsync();
-    });
-
-    expect(screen.getByTestId("content")).toBeInTheDocument();
-    expect(screen.getByTestId("content")).toHaveTextContent("Enabled");
+    // The content should be visible since we set defaultValue to true
+    expect(screen.getByTestId("feature-content")).toBeInTheDocument();
+    expect(screen.getByTestId("feature-content")).toHaveTextContent("Feature is enabled by default");
   });
-});
+}); 

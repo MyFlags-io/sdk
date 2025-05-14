@@ -1,12 +1,6 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { Flag, MyFlagsConfig, MyFlagsSDK, REFRESH_INTERVAL } from "@myflags/core";
-import { useSessionStorage } from "./hooks/useSessionStorage";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Flag, MyFlagsConfig, MyFlagsSDK } from "@myflags/core";
+import { useIndexedDB } from "./hooks/useIndexedDB";
 
 interface MyFlagsProviderProps {
   config: MyFlagsConfig;
@@ -15,44 +9,25 @@ interface MyFlagsProviderProps {
 
 export const MyFlagsContext = createContext<Flag | null>(null);
 
-export function MyFlagsProvider({
-  config,
-  children,
-}: MyFlagsProviderProps): JSX.Element {
-  const [flags, setFlags] = useSessionStorage<Flag>('flags', {});
-  const [isMounted, setIsMounted] = useState(false);
-  const [client] = useState<MyFlagsSDK>(new MyFlagsSDK(config));
-  const refreshInterval = config.refreshInterval || REFRESH_INTERVAL;
+export function MyFlagsProvider(props: MyFlagsProviderProps): JSX.Element {
+  const [flags, setFlags] = useIndexedDB<Flag>("flags", {});
+  const [client] = useState(() => new MyFlagsSDK(props.config));
 
-  const fetchFlags = useCallback(async () => {
-    const fetchedFlags = await client.getFlags();
-    setFlags(fetchedFlags);
+  useEffect(() => {
+    const unsubscribe = client.subscribe(setFlags);
+    return unsubscribe;
   }, [client, setFlags]);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    fetchFlags();
-  }, [client, isMounted, fetchFlags]);
-
-  useEffect(() => {
-    const interval = setInterval(fetchFlags, refreshInterval);
-    return () => clearInterval(interval);
-  }, [refreshInterval, fetchFlags]);
-
   return (
-    <MyFlagsContext.Provider value={flags}>{children}</MyFlagsContext.Provider>
+    <MyFlagsContext.Provider value={flags}>
+      {props.children}
+    </MyFlagsContext.Provider>
   );
 }
 
 export function useMyFlagsContext(): Flag {
   const context = useContext(MyFlagsContext);
-  if (!context) {
-    throw new Error("useMyFlagsContext must be used within an MyFlagsProvider");
-  }
+  if (!context) throw new Error("MyFlagsContext not found");
 
   return context;
 }

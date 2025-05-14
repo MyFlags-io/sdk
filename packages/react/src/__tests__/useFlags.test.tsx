@@ -1,73 +1,110 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import useFlags from "../hooks/useFlags";
-import { MyFlagsProvider } from "../Provider";
+import { useState } from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { MyFlagsSDK } from "@myflags/core";
+import { MyFlagsProvider } from "../Provider";
+import useFlags from "../hooks/useFlags";
+import * as IndexedDBHook from "../hooks/useIndexedDB";
 
-describe("useFlags", () => {
+vi.mock("@myflags/core", () => {
+  const MockSDK = vi.fn().mockImplementation(() => ({
+    config: {
+      apiKey: "test-api-key",
+      projectId: "test-project",
+      environment: "development",
+    },
+    baseUrl: "https://myflags.io/api",
+    getFlags: vi.fn().mockResolvedValue({}),
+    getFlag: vi.fn().mockResolvedValue(false),
+    subscribe: vi.fn().mockImplementation((callback) => {
+      callback({
+        feature1: true,
+        feature2: false,
+      });
+      return () => {};
+    }),
+    fetch: vi.fn(),
+  }));
+
+  return {
+    MyFlagsSDK: MockSDK,
+    Flag: {},
+    MyFlagsConfig: {},
+  };
+});
+
+describe("useFlags hook", () => {
   const mockConfig = {
     apiKey: "test-api-key",
     projectId: "test-project",
     environment: "development" as const,
   };
 
-  const mockFlags = {
-    feature1: true,
-    feature2: false,
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(MyFlagsSDK).mockImplementation(
-      () =>
-        ({
-          getFlags: vi.fn().mockResolvedValue(mockFlags),
-          getFlag: vi.fn(),
-          config: mockConfig,
-          client: {
-            get: vi.fn(),
-          },
-        } as unknown as MyFlagsSDK)
+
+    vi.spyOn(IndexedDBHook, "useIndexedDB").mockImplementation(
+      (_, initialValue) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [state, setState] = useState(initialValue);
+        return [state, setState];
+      }
     );
   });
 
-  it("should return all flags", async () => {
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <MyFlagsProvider config={mockConfig}>{children}</MyFlagsProvider>
-    );
-
-    const { result } = renderHook(() => useFlags(), { wrapper });
-
-    await act(async () => {
-      await vi.runOnlyPendingTimersAsync();
-    });
-
-    expect(result.current).toEqual(mockFlags);
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it("should return empty object when no flags are available", async () => {
+  it("should return all flags from the context", () => {
+    const expectedFlags = {
+      feature1: true,
+      feature2: false,
+    };
+
     vi.mocked(MyFlagsSDK).mockImplementation(
       () =>
         ({
-          getFlags: vi.fn().mockResolvedValue({}),
-          getFlag: vi.fn(),
           config: mockConfig,
-          client: {
-            get: vi.fn(),
-          },
+          baseUrl: "https://myflags.io/api",
+          getFlags: vi.fn().mockResolvedValue(expectedFlags),
+          getFlag: vi.fn(),
+          subscribe: vi.fn().mockImplementation((callback) => {
+            callback(expectedFlags);
+            return () => {};
+          }),
+          fetch: vi.fn(),
         } as unknown as MyFlagsSDK)
     );
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <MyFlagsProvider config={mockConfig}>{children}</MyFlagsProvider>
+    const TestComponent = () => {
+      const flags = useFlags();
+      return <div data-testid="flags">{JSON.stringify(flags)}</div>;
+    };
+
+    render(
+      <MyFlagsProvider config={mockConfig}>
+        <TestComponent />
+      </MyFlagsProvider>
     );
 
-    const { result } = renderHook(() => useFlags(), { wrapper });
+    expect(screen.getByTestId("flags")).toHaveTextContent(
+      JSON.stringify(expectedFlags)
+    );
+  });
 
-    await act(async () => {
-      await vi.runOnlyPendingTimersAsync();
-    });
+  it("should throw error when used outside provider", () => {
+    const TestComponent = () => {
+      useFlags();
+      return null;
+    };
 
-    expect(result.current).toEqual({});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    expect(() => render(<TestComponent />)).toThrow("MyFlagsContext not found");
+
+    consoleError.mockRestore();
   });
 });

@@ -79,6 +79,46 @@ function MyComponent() {
 }
 ```
 
+## Storage
+
+By default, MyFlags stores feature flag data in IndexedDB for persistent storage between browser sessions.
+
+## Advanced Usage
+
+### Using All Flags
+
+You can access all flags with the `useFlags` hook:
+
+```jsx
+import { useFlags } from '@myflags/react';
+
+function YourComponent() {
+  const flags = useFlags();
+  
+  return (
+    <pre>{JSON.stringify(flags, null, 2)}</pre>
+  );
+}
+```
+
+### Custom Storage
+
+If you need direct access to the IndexedDB storage functionality:
+
+```jsx
+import { useIndexedDB } from '@myflags/react';
+
+function YourComponent() {
+  const [value, setValue] = useIndexedDB('custom-key', { defaultValue: true });
+  
+  return (
+    <button onClick={() => setValue({ newValue: !value.defaultValue })}>
+      Toggle Value
+    </button>
+  );
+}
+```
+
 ## API Reference
 
 ### Components
