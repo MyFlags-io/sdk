@@ -136,7 +136,7 @@ function FeatureComponent() {
 
 ## 📚 Documentation
 
-For detailed documentation, visit [docs.myflags.io](https://docs.myflags.io).
+For detailed documentation, visit [myflags.io/documentation](https://myflags.io/documentation).
 
 ### Key Features
 
