@@ -170,8 +170,8 @@ pnpm test
 - [MyFlags Website](https://myflags.io)
 - [Documentation](https://myflags.io/documentation)
 - [Dashboard](https://myflags.io/app/dashboard)
-- [Twitter](https://twitter.com/myflags)
+- [Twitter](https://x.com/myflagsio)
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License.
