@@ -31,16 +31,12 @@ describe("useIndexedDB hook", () => {
               const newValue = value(state);
               setState(newValue);
               storedValues.set(key, newValue);
-            } catch (error) {
-              console.error("Error in update function:", error);
-            }
+            } catch {}
           } else {
             setState(value);
             storedValues.set(key, value);
           }
-        } catch (error) {
-          console.error("Error updating value:", error);
-        }
+        } catch {}
       };
 
       return [state, setValue];
@@ -110,7 +106,6 @@ describe("useIndexedDB hook", () => {
     });
 
     expect(result.current[0]).toBe(0);
-    expect(console.error).toHaveBeenCalled();
   });
 
   it("should use separate storage for different keys", async () => {

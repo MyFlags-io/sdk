@@ -8,11 +8,9 @@ export function useIndexedDB<T>(
   key: string,
   initialValue: T
 ): [T, (value: T) => void] {
-  // Initialize state with the initialValue
   const [storedValue, setStoredValue] = useState<T>(initialValue);
   const [isDbReady, setIsDbReady] = useState<boolean>(false);
 
-  // Function to open database connection
   const openDB = useCallback(() => {
     return new Promise<IDBDatabase>((resolve, reject) => {
       if (typeof window === "undefined" || !window.indexedDB) {
@@ -22,8 +20,7 @@ export function useIndexedDB<T>(
 
       const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
-      request.onerror = (event) => {
-        console.error("Error opening IndexedDB:", event);
+      request.onerror = () => {
         reject("Error opening IndexedDB");
       };
 
@@ -49,13 +46,12 @@ export function useIndexedDB<T>(
 
     try {
       const db = await openDB();
-      return new Promise<T>((resolve, reject) => {
+      return new Promise<T>((resolve) => {
         const transaction = db.transaction(STORE_NAME, "readonly");
         const store = transaction.objectStore(STORE_NAME);
         const request = store.get(key);
 
         request.onerror = () => {
-          console.error("Error reading from IndexedDB");
           resolve(initialValue);
         };
 
@@ -69,8 +65,7 @@ export function useIndexedDB<T>(
           }
         };
       });
-    } catch (error) {
-      console.error("Error accessing IndexedDB:", error);
+    } catch {
       return initialValue;
     }
   }, [key, initialValue, openDB]);
@@ -86,59 +81,50 @@ export function useIndexedDB<T>(
         const db = await openDB();
         const transaction = db.transaction(STORE_NAME, "readwrite");
         const store = transaction.objectStore(STORE_NAME);
-        
+
         store.put({ id: key, value: valueToStore });
-        
+
         transaction.oncomplete = () => {
           db.close();
         };
-        
-        transaction.onerror = (event) => {
-          console.error("Error writing to IndexedDB:", event);
+
+        transaction.onerror = () => {
           db.close();
         };
-      } catch (error) {
-        console.error("Error accessing IndexedDB:", error);
-      }
+      } catch {}
     },
     [key, openDB]
   );
 
-  // Initialize on mount
   useEffect(() => {
     const initializeDB = async () => {
       try {
         const value = await getValueFromDB();
         setStoredValue(value);
         setIsDbReady(true);
-      } catch (error) {
-        console.error("Failed to initialize IndexedDB:", error);
-        setIsDbReady(true); // Still set ready even on error to prevent hanging
+      } catch {
+        setIsDbReady(true);
       }
     };
 
     initializeDB();
   }, [getValueFromDB]);
 
-  // Value setter that updates state and persists to IndexedDB
   const setValue = useCallback(
     (value: T) => {
       try {
-        // Support function updates like useState
         const valueToStore =
           value instanceof Function ? value(storedValue) : value;
-        
+
         setStoredValue(valueToStore);
-        
+
         if (isDbReady) {
           setValueInDB(valueToStore);
         }
-      } catch (error) {
-        console.error("Error updating value:", error);
-      }
+      } catch {}
     },
     [storedValue, isDbReady, setValueInDB]
   );
 
   return [storedValue, setValue];
-} 
+}
