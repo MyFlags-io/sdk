@@ -48,7 +48,6 @@ describe("FeatureFlag component", () => {
     // Mock the IndexedDB hook to avoid actual IndexedDB usage
     vi.spyOn(IndexedDBHook, "useIndexedDB").mockImplementation(
       (_, initialValue) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         const [state, setState] = useState(initialValue);
         return [state, setState];
       }
@@ -65,7 +64,6 @@ describe("FeatureFlag component", () => {
       disabledFeature: false,
     };
 
-    // Mock the subscription to return our expected flags
     vi.mocked(MyFlagsSDK).mockImplementation(() => ({
       config: mockConfig,
       baseUrl: "https://myflags.io/api",
@@ -88,7 +86,6 @@ describe("FeatureFlag component", () => {
       </MyFlagsProvider>
     );
 
-    // The content should be visible since the flag is enabled
     expect(screen.getByTestId("feature-content")).toBeInTheDocument();
     expect(screen.getByTestId("feature-content")).toHaveTextContent("Feature is enabled");
   });
@@ -99,7 +96,6 @@ describe("FeatureFlag component", () => {
       disabledFeature: false,
     };
 
-    // Mock the subscription to return our expected flags
     vi.mocked(MyFlagsSDK).mockImplementation(() => ({
       config: mockConfig,
       baseUrl: "https://myflags.io/api",
@@ -126,7 +122,6 @@ describe("FeatureFlag component", () => {
       </MyFlagsProvider>
     );
 
-    // The disabled content should be visible since the flag is disabled
     expect(screen.queryByTestId("feature-content")).not.toBeInTheDocument();
     expect(screen.getByTestId("disabled-content")).toBeInTheDocument();
     expect(screen.getByTestId("disabled-content")).toHaveTextContent("Feature is disabled");
@@ -138,7 +133,6 @@ describe("FeatureFlag component", () => {
       disabledFeature: false,
     };
 
-    // Mock the subscription to return our expected flags
     vi.mocked(MyFlagsSDK).mockImplementation(() => ({
       config: mockConfig,
       baseUrl: "https://myflags.io/api",
@@ -165,7 +159,6 @@ describe("FeatureFlag component", () => {
       </MyFlagsProvider>
     );
 
-    // The content should be visible since we set defaultValue to true
     expect(screen.getByTestId("feature-content")).toBeInTheDocument();
     expect(screen.getByTestId("feature-content")).toHaveTextContent("Feature is enabled by default");
   });

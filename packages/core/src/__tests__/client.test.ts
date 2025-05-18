@@ -1,12 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  MyFlagsSDK,
-  REFRESH_INTERVAL,
-  DEFAULT_ENVIRONMENT,
-  DEFAULT_RETRY_COUNT,
-  DEFAULT_RETRY_DELAY,
-} from "../client";
-import type { MyFlagsConfig, Flag } from "../types";
+import { MyFlagsSDK, REFRESH_INTERVAL } from "../client";
+import type { MyFlagsConfig } from "../types";
 
 // Mock global fetch
 global.fetch = vi.fn();
@@ -82,6 +76,7 @@ describe("MyFlagsSDK", () => {
     it("should throw error when project ID is not a string", () => {
       const invalidConfig = {
         apiKey: "test-api-key",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         projectId: 123 as any,
       };
 

@@ -5,12 +5,14 @@ import { renderHook, act } from "@testing-library/react";
 const mockUseIndexedDB = vi.fn();
 
 vi.mock("../hooks/useIndexedDB", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useIndexedDB: (...args: any[]) => mockUseIndexedDB(...args),
 }));
 
 import { useIndexedDB } from "../hooks/useIndexedDB";
 
 describe("useIndexedDB hook", () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let storedValues: Map<string, any> = new Map();
 
   beforeEach(() => {
@@ -24,6 +26,7 @@ describe("useIndexedDB hook", () => {
 
       const [state, setState] = useState(storedValue);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const setValue = (value: any) => {
         try {
           if (typeof value === "function") {
@@ -81,6 +84,7 @@ describe("useIndexedDB hook", () => {
     const { result } = renderHook(() => useIndexedDB("counterKey", 0));
 
     await act(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const setValue: any = result.current[1];
       setValue((prev: number) => prev + 1);
     });
@@ -88,6 +92,7 @@ describe("useIndexedDB hook", () => {
     expect(result.current[0]).toBe(1);
 
     await act(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const setValue: any = result.current[1];
       setValue((prev: number) => prev + 1);
     });
@@ -99,6 +104,7 @@ describe("useIndexedDB hook", () => {
     const { result } = renderHook(() => useIndexedDB("errorKey", 0));
 
     await act(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const setValue: any = result.current[1];
       setValue(function errorFn() {
         throw new Error("Test error");

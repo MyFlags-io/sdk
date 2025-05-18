@@ -44,7 +44,6 @@ describe("MyFlagsProvider", () => {
 
     vi.spyOn(IndexedDBHook, "useIndexedDB").mockImplementation(
       (_, initialValue) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         const [state, setState] = useState(initialValue);
         return [state, setState];
       }
