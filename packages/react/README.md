@@ -31,6 +31,8 @@ function App() {
         projectId: "your-project-id",
         environment: "production",
         refreshInterval: 600000, // optional, defaults to 10 minutes
+        retryCount: 3, // optional, defaults to 3 retries
+        retryDelay: 1000, // optional, defaults to 1000ms between retries
       }}
     >
       <YourApp />
@@ -101,24 +103,6 @@ function YourComponent() {
 }
 ```
 
-### Custom Storage
-
-If you need direct access to the IndexedDB storage functionality:
-
-```jsx
-import { useIndexedDB } from '@myflags/react';
-
-function YourComponent() {
-  const [value, setValue] = useIndexedDB('custom-key', { defaultValue: true });
-  
-  return (
-    <button onClick={() => setValue({ newValue: !value.defaultValue })}>
-      Toggle Value
-    </button>
-  );
-}
-```
-
 ## API Reference
 
 ### Components
@@ -140,6 +124,8 @@ Props:
   - `projectId`: string (optional) - Your project ID
   - `environment`: 'production' | 'development' | 'testing' (optional) - Environment to use
   - `refreshInterval`: number (optional) - Refresh interval in milliseconds
+  - `retryCount`: number (optional) - Number of retries for failed API requests (defaults to 3)
+  - `retryDelay`: number (optional) - Delay between retries in milliseconds (defaults to 1000)
 
 ### Hooks
 
@@ -189,6 +175,8 @@ function App() {
         apiKey: "your-api-key",
         projectId: "your-project-id",
         environment: "production",
+        retryCount: 3, // optional, defaults to 3 retries
+        retryDelay: 1000, // optional, defaults to 1000ms between retries
       }}
     >
       <Header />
