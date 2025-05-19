@@ -31,6 +31,8 @@ function App() {
         projectId: "your-project-id",
         environment: "production",
         refreshInterval: 600000, // optional, defaults to 10 minutes
+        retryCount: 3, // optional, defaults to 3 retries
+        retryDelay: 1000, // optional, defaults to 1000ms between retries
       }}
     >
       <YourApp />
@@ -79,6 +81,28 @@ function MyComponent() {
 }
 ```
 
+## Storage
+
+By default, MyFlags stores feature flag data in IndexedDB for persistent storage between browser sessions.
+
+## Advanced Usage
+
+### Using All Flags
+
+You can access all flags with the `useFlags` hook:
+
+```jsx
+import { useFlags } from '@myflags/react';
+
+function YourComponent() {
+  const flags = useFlags();
+  
+  return (
+    <pre>{JSON.stringify(flags, null, 2)}</pre>
+  );
+}
+```
+
 ## API Reference
 
 ### Components
@@ -100,6 +124,8 @@ Props:
   - `projectId`: string (optional) - Your project ID
   - `environment`: 'production' | 'development' | 'testing' (optional) - Environment to use
   - `refreshInterval`: number (optional) - Refresh interval in milliseconds
+  - `retryCount`: number (optional) - Number of retries for failed API requests (defaults to 3)
+  - `retryDelay`: number (optional) - Delay between retries in milliseconds (defaults to 1000)
 
 ### Hooks
 
@@ -149,6 +175,8 @@ function App() {
         apiKey: "your-api-key",
         projectId: "your-project-id",
         environment: "production",
+        retryCount: 3, // optional, defaults to 3 retries
+        retryDelay: 1000, // optional, defaults to 1000ms between retries
       }}
     >
       <Header />

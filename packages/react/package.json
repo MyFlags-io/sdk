@@ -1,6 +1,6 @@
 {
   "name": "@myflags/react",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "React bindings for MyFlags feature flag management",
   "author": "MyFlags Team",
   "license": "MIT",

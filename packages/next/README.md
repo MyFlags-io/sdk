@@ -31,6 +31,8 @@ export default function RootLayout({
         apiKey: "your-api-key",
         projectId: "your-project-id",
         environment: "production",
+        retryCount: 3, // Optional, defaults to 3 retries
+        retryDelay: 1000, // Optional, delay between retries in milliseconds
       }}
     >
       {children}
@@ -51,6 +53,8 @@ const config: MyFlagsConfig = {
   apiKey: "your-api-key",
   projectId: "your-project-id",
   environment: "production",
+  retryCount: 3, // Optional, defaults to 3 retries
+  retryDelay: 1000, // Optional, delay between retries in milliseconds
 };
 
 export default async function Page() {
@@ -100,6 +104,8 @@ export default async function Page() {
     apiKey: "your-api-key",
     projectId: "your-project-id",
     environment: "production",
+    retryCount: 3, // Optional, defaults to 3 retries
+    retryDelay: 1000, // Optional, delay between retries in milliseconds
   });
 
   return <div>{flags.newFeature && <NewFeatureComponent />}</div>;
@@ -116,6 +122,8 @@ export default async function handler(req, res) {
     apiKey: "your-api-key",
     projectId: "your-project-id",
     environment: "production",
+    retryCount: 3, // Optional, defaults to 3 retries
+    retryDelay: 1000, // Optional, delay between retries in milliseconds
   });
 
   res.status(200).json(flags);
@@ -132,6 +140,8 @@ interface MyFlagsConfig {
   projectId: string;
   environment: string;
   refreshInterval?: number; // Optional, defaults to 10 minutes (600000ms)
+  retryCount?: number; // Optional, defaults to 3 retries for failed API requests
+  retryDelay?: number; // Optional, defaults to 1000ms delay between retries
 }
 ```
 

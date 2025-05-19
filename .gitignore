@@ -15,6 +15,7 @@ dist-ssr
 .turbo
 
 # Editor directories and files
+coverage/
 .vscode/*
 !.vscode/extensions.json
 .idea

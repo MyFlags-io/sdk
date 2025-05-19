@@ -59,6 +59,8 @@ const sdk = new MyFlagsSDK({
   apiKey: "your-api-key",
   projectId: "your-project-id",
   environment: "production",
+  retryCount: 3,
+  retryDelay: 1000,
 });
 
 // Check if a feature is enabled
@@ -84,6 +86,8 @@ function App() {
       apiKey="your-api-key"
       projectId="your-project-id"
       environment="production"
+      retryCount={3}
+      retryDelay={1000}
     >
       <YourComponents />
     </MyFlagsProvider>
@@ -118,6 +122,8 @@ export default function App({ Component, pageProps }) {
       apiKey={process.env.MYFLAGS_API_KEY}
       projectId={process.env.MYFLAGS_PROJECT_ID}
       environment={process.env.NODE_ENV}
+      retryCount={3}
+      retryDelay={1000}
     >
       <Component {...pageProps} />
     </MyFlagsProvider>

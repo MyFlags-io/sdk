@@ -29,6 +29,8 @@ const sdk = new MyFlagsSDK({
   projectId: "your-project-id",
   environment: "production", // optional, defaults to 'production'
   refreshInterval: 600000, // optional, defaults to 10 minutes
+  retryCount: 3, // optional, defaults to 3 retries for failed API requests
+  retryDelay: 1000, // optional, defaults to 1000ms between retries
 });
 ```
 
@@ -47,9 +49,11 @@ const isEnabled = await sdk.getFlag("feature_key");
 ```typescript
 interface MyFlagsConfig {
   apiKey: string; // Required: Your MyFlags API key
-  projectId?: string; // Optional: Your project ID
+  projectId: string; // Required: Your MyFlags Project key
   environment?: "production" | "development" | "testing"; // Optional: Environment
   refreshInterval?: number; // Optional: Refresh interval in milliseconds
+  retryCount?: number; // Optional: Number of retries for failed API requests
+  retryDelay?: number; // Optional: Delay between retries in milliseconds
 }
 ```
 
@@ -67,6 +71,8 @@ The main class for interacting with the MyFlags service.
 | projectId       | string                                     | -            | Your project ID                           |
 | environment     | 'production' \| 'development' \| 'testing' | 'production' | Environment to use                        |
 | refreshInterval | number                                     | 600000       | Interval in milliseconds to refresh flags |
+| retryCount      | number                                     | 3            | Number of retries for failed API requests |
+| retryDelay      | number                                     | 1000         | Delay between retries in milliseconds     |
 
 #### Methods
 

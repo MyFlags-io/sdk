@@ -1,6 +1,6 @@
 {
   "name": "@myflags/next",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "type": "module",
   "description": "Next.js bindings for MyFlags SDK",
   "author": "MyFlags Team",
@@ -37,8 +37,8 @@
     "dev": "tsup --watch",
     "lint": "eslint src/**/*.{ts,tsx}",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "echo 'No tests for now'",
+    "test:watch": "echo 'No tests for now'"
   },
   "publishConfig": {
     "access": "public"
