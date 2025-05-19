@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 const DB_NAME = "myflags";
 const DB_VERSION = 1;
@@ -10,6 +10,7 @@ export function useIndexedDB<T>(
 ): [T, (value: T) => void] {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
   const [isDbReady, setIsDbReady] = useState<boolean>(false);
+  const pendingWrites = useRef<T[]>([]);
 
   const openDB = useCallback(() => {
     return new Promise<IDBDatabase>((resolve, reject) => {
@@ -74,6 +75,7 @@ export function useIndexedDB<T>(
   const setValueInDB = useCallback(
     async (valueToStore: T) => {
       if (typeof window === "undefined" || !window.indexedDB) {
+        console.warn("[MyFlags] IndexedDB not supported in this environment");
         return;
       }
 
@@ -81,7 +83,6 @@ export function useIndexedDB<T>(
         const db = await openDB();
         const transaction = db.transaction(STORE_NAME, "readwrite");
         const store = transaction.objectStore(STORE_NAME);
-
         store.put({ id: key, value: valueToStore });
 
         transaction.oncomplete = () => {
@@ -91,7 +92,9 @@ export function useIndexedDB<T>(
         transaction.onerror = () => {
           db.close();
         };
-      } catch {}
+      } catch (error) {
+        console.error("[MyFlags] Error in setValueInDB:", error);
+      }
     },
     [key, openDB]
   );
@@ -102,13 +105,21 @@ export function useIndexedDB<T>(
         const value = await getValueFromDB();
         setStoredValue(value);
         setIsDbReady(true);
+        
+        // Process any pending writes
+        if (pendingWrites.current.length > 0) {
+          for (const value of pendingWrites.current) {
+            await setValueInDB(value);
+          }
+          pendingWrites.current = [];
+        }
       } catch {
         setIsDbReady(true);
       }
     };
 
     initializeDB();
-  }, [getValueFromDB]);
+  }, [getValueFromDB, setValueInDB]);
 
   const setValue = useCallback(
     (value: T) => {
@@ -120,8 +131,12 @@ export function useIndexedDB<T>(
 
         if (isDbReady) {
           setValueInDB(valueToStore);
+        } else {
+          pendingWrites.current.push(valueToStore);
         }
-      } catch {}
+      } catch (error) {
+        console.error("[MyFlags] Error in setValue:", error);
+      }
     },
     [storedValue, isDbReady, setValueInDB]
   );

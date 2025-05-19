@@ -15,8 +15,8 @@ export function MyFlagsProvider(props: MyFlagsProviderProps): JSX.Element {
 
   useEffect(() => {
     const unsubscribe = client.subscribe(setFlags);
-    return unsubscribe;
-  }, [client, setFlags]);
+    return () => unsubscribe();
+  }, [client]);
 
   return (
     <MyFlagsContext.Provider value={flags}>
